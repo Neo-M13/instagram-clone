@@ -6,41 +6,40 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 
 const useGetUserPosts = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const { posts, setPotsts } = usePostStore();
-  const showToast = useShowToast();
-  const userProfile = useUserProfileStore((state) => state.userProfile);
+	const [isLoading, setIsLoading] = useState(true);
+	const { posts, setPosts } = usePostStore();
+	const showToast = useShowToast();
+	const userProfile = useUserProfileStore((state) => state.userProfile);
 
-  useEffect(() => {
-    const getPosts = async () => {
-      if (!userProfile) return;
-      setIsLoading(true);
-      setPotsts([]);
-      try {
-        const q = query(
-          collection(firestore, "posts"),
-          where("createdBy", "==", userProfile.uid)
-        );
-        const querySnapshot = await getDocs(q);
+	useEffect(() => {
+		const getPosts = async () => {
+			if (!userProfile) return;
+			setIsLoading(true);
+			setPosts([]);
 
-        const posts = [];
-        querySnapshot.forEach((doc) => {
-          posts.push({ ...doc.data(), id: doc.id });
-        });
+			try {
+				const q = query(collection(firestore, "posts"), where("createdBy", "==", userProfile.uid));
+				const querySnapshot = await getDocs(q);
 
-        posts.sort((a, b) => b.createdAt - a.createdAt);
-        setPotsts(posts);
-      } catch (error) {
-        showToast("Error", error.message, "error");
-        setPotsts([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getPosts();
-  }, [setPotsts, userProfile, showToast]);
+				const posts = [];
+				querySnapshot.forEach((doc) => {
+					posts.push({ ...doc.data(), id: doc.id });
+				});
 
-  return { isLoading, posts };
+				posts.sort((a, b) => b.createdAt - a.createdAt);
+				setPosts(posts);
+			} catch (error) {
+				showToast("Error", error.message, "error");
+				setPosts([]);
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		getPosts();
+	}, [setPosts, userProfile, showToast]);
+
+	return { isLoading, posts };
 };
 
 export default useGetUserPosts;
