@@ -4,13 +4,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBhl9jPvO1Gn_rm2P201rT4kHZuxZOUEpQ",
-  authDomain: "instagram-clone-19d0b.firebaseapp.com",
-  projectId: "instagram-clone-19d0b",
-  storageBucket: "instagram-clone-19d0b.firebasestorage.app",
-  messagingSenderId: "967855532158",
-  appId: "1:967855532158:web:d7ffc761de72a76315902f",
-  measurementId: "G-QT61TSKGNT",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId:import.meta.env.VITE_FIREBASE_MESSAGING_SENDER ,
+  appId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER ,
+  measurementId:import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);

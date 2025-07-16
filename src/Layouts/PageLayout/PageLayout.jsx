@@ -5,12 +5,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/firebase";
 import Navbar from "../../components/Navbar/Navbar";
 
-//instead of ading the sidebar component to every page, we can add it only once to the PayLayout component
-// and wrap the children with it . This way we can have a sidebar on every page except the AuthPage.
 
 const PageLayout = ({ children }) => {
   const { pathname } = useLocation();
-  const [user, loading ] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const canRenderSidebar = pathname !== "/auth" && user;
   const canRenderNavbar = !user && !loading && pathname !== "/auth";
 
@@ -19,18 +17,18 @@ const PageLayout = ({ children }) => {
 
   return (
     <Flex flexDir={canRenderNavbar ? "column" : "row"}>
-      {/* sidebar on the left */}
+     
       {canRenderSidebar ? (
         <Box w={{ base: "70px", md: "240px" }}>
           <Sidebar />
         </Box>
       ) : null}
-      {/* Navbar */}
+     
       {canRenderNavbar ? <Navbar /> : null}
-      {/* the page content on the right */}
+     
       <Box
         flex={1}
-        w={{ base: "calc(100% -70px)", md: "calc(100% - 240px)" }}
+        w={{ base: "calc(100% - 70px)", md: "calc(100% - 240px)" }}
         mx={"auto"}
       >
         {children}
@@ -45,7 +43,7 @@ const PageLayoutSpinner = () => {
   return (
     <Flex
       flexDir="column"
-      h={"100vh"}
+      h="100vh"
       alignItems="center"
       justifyContent="center"
     >
