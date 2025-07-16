@@ -6,6 +6,7 @@ import {
   Text,
   Button,
   useDisclosure,
+  Box,
 } from "@chakra-ui/react";
 import useUserProfileStore from "../../store/userProfileStore";
 import useAuthStore from "../../store/authStore";
@@ -16,12 +17,12 @@ const ProfileHeader = () => {
   const { userProfile } = useUserProfileStore();
   const authUser = useAuthStore((state) => state.user);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {isFollowing, isUpdating, handleFollowUser} = useFollowUser(userProfile?.uid);
+  const { isFollowing, isUpdating, handleFollowUser } = useFollowUser(userProfile?.uid);
 
-   const visitingOwnProfileAndAuth =
+  const visitingOwnProfileAndAuth =
     authUser && authUser.username === userProfile.username;
   const visitingAnotherProfileAndAuth =
-    authUser &&  authUser.username !== userProfile.username;
+    authUser && authUser.username !== userProfile.username;
 
   return (
     <Flex
@@ -34,7 +35,7 @@ const ProfileHeader = () => {
         alignSelf="flex-start"
         mx="auto"
       >
-        <Avatar src={userProfile.profilePicURL} alt="As a programmer logo" />
+        <Avatar src={userProfile.profilePicURL} alt="Profile Picture" />
       </AvatarGroup>
 
       <VStack alignItems="flex-start" gap={2} mx="auto" flex={1}>
@@ -48,11 +49,12 @@ const ProfileHeader = () => {
           <Text fontSize={{ base: "sm", md: "lg" }}>
             {userProfile.username}
           </Text>
+
           {visitingOwnProfileAndAuth && (
-            <Flex gap={4} alignItems={"center"} justifyContent={"center"}>
+            <Flex gap={4} alignItems="center" justifyContent="center">
               <Button
-                bg={"white"}
-                color={"black"}
+                bg="white"
+                color="black"
                 _hover={{ bg: "whiteAlpha.800" }}
                 size={{ base: "xs", md: "sm" }}
                 onClick={onOpen}
@@ -61,11 +63,12 @@ const ProfileHeader = () => {
               </Button>
             </Flex>
           )}
+
           {visitingAnotherProfileAndAuth && (
-            <Flex gap={4} alignItems={"center"} justifyContent={"center"}>
+            <Flex gap={4} alignItems="center" justifyContent="center">
               <Button
-                bg={"blue.500"}
-                color={"white"}
+                bg="blue.500"
+                color="white"
                 _hover={{ bg: "blue.600" }}
                 size={{ base: "xs", md: "sm" }}
                 onClick={handleFollowUser}
@@ -77,33 +80,38 @@ const ProfileHeader = () => {
           )}
         </Flex>
 
-        <Flex alignItems={"center"} gap={{ base: 2, sm: 4 }}>
+        <Flex alignItems="center" gap={{ base: 2, sm: 4 }}>
           <Text fontSize={{ base: "xs", md: "sm" }}>
-            <Text as="span" fontWeight={"bold"} mr={1}>
+            <Box as="span" fontWeight="bold" mr={1}>
               {userProfile.posts.length}
-            </Text>
+            </Box>
             Posts
           </Text>
+
           <Text fontSize={{ base: "xs", md: "sm" }}>
-            <Text as="span" fontWeight={"bold"} mr={1}>
+            <Box as="span" fontWeight="bold" mr={1}>
               {userProfile.followers.length}
-            </Text>
+            </Box>
             Followers
           </Text>
+
           <Text fontSize={{ base: "xs", md: "sm" }}>
-            <Text as="span" fontWeight={"bold"} mr={1}>
+            <Box as="span" fontWeight="bold" mr={1}>
               {userProfile.following.length}
-            </Text>
+            </Box>
             Following
           </Text>
         </Flex>
-        <Flex alignItems={"center"} gap={4}>
-          <Text fontSize={"sm"} fontWeight={"bold"}>
+
+        <Flex alignItems="center" gap={4}>
+          <Text fontSize="sm" fontWeight="bold">
             {userProfile.fullName}
           </Text>
         </Flex>
-        <Text fontSize={"sm"}>{userProfile.bio}</Text>
+
+        <Text fontSize="sm">{userProfile.bio}</Text>
       </VStack>
+
       {isOpen && <EditProfile isOpen={isOpen} onClose={onClose} />}
     </Flex>
   );
