@@ -11,8 +11,8 @@ import {
   ModalContent,
   ModalOverlay,
   Text,
-  useDisclosure,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { AiFillHeart } from "react-icons/ai";
 import { FaComment } from "react-icons/fa";
@@ -20,10 +20,11 @@ import { MdDelete } from "react-icons/md";
 import Comment from "../Comment/Comment";
 import PostFooter from "../FeedPosts/PostFooter";
 import useUserProfileStore from "../../store/userProfileStore";
+import useAuthStore from "../../store/authStore";
 import useShowToast from "../../hooks/useShowToast";
 import { useState } from "react";
-import { firestore, storage } from "../../firebase/firebase";
 import { deleteObject, ref } from "firebase/storage";
+import { firestore, storage } from "../../firebase/firebase";
 import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import usePostStore from "../../store/postStore";
 import Caption from "../Comment/Caption";
@@ -46,7 +47,10 @@ const ProfilePost = ({ post }) => {
       await deleteObject(imageRef);
       const userRef = doc(firestore, "users", authUser.uid);
       await deleteDoc(doc(firestore, "posts", post.id));
-      await updateDoc(userRef, { posts: arrayRemove(post.id) });
+
+      await updateDoc(userRef, {
+        posts: arrayRemove(post.id),
+      });
 
       deletePost(post.id);
       decrementPostsCount(post.id);
@@ -90,6 +94,7 @@ const ProfilePost = ({ post }) => {
                 {post.likes.length}
               </Text>
             </Flex>
+
             <Flex>
               <FaComment size={20} />
               <Text fontWeight={"bold"} ml={2}>
@@ -147,7 +152,7 @@ const ProfilePost = ({ post }) => {
                     <Avatar
                       src={userProfile.profilePicURL}
                       size={"sm"}
-                      name="Just a girl"
+                      name="As a Programmer"
                     />
                     <Text fontWeight={"bold"} fontSize={12}>
                       {userProfile.username}
@@ -174,11 +179,10 @@ const ProfilePost = ({ post }) => {
                   w="full"
                   alignItems={"start"}
                   maxH={"350px"}
-                  overflow={"auto"}
+                  overflowY={"auto"}
                 >
                   {/* CAPTION */}
                   {post.caption && <Caption post={post} />}
-
                   {/* COMMENTS */}
                   {post.comments.map((comment) => (
                     <Comment key={comment.id} comment={comment} />
@@ -186,7 +190,7 @@ const ProfilePost = ({ post }) => {
                 </VStack>
                 <Divider my={4} bg={"gray.8000"} />
 
-                <PostFooter is isProfilePage={true} post={post} />
+                <PostFooter isProfilePage={true} post={post} />
               </Flex>
             </Flex>
           </ModalBody>
